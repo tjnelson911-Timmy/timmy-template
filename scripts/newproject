@@ -1,0 +1,111 @@
+#!/bin/bash
+
+# Timmy Template - Project Scaffolding Tool
+# Usage: newproject <template> <project-name>
+
+TEMPLATES_DIR="$HOME/templates"
+
+show_help() {
+  echo ""
+  echo "  ╔════════════════════════════════════════╗"
+  echo "  ║         🚀 TIMMY TEMPLATE 🚀           ║"
+  echo "  ╚════════════════════════════════════════╝"
+  echo ""
+  echo "  Usage: newproject <template> <project-name>"
+  echo ""
+  echo "  Templates:"
+  echo "    react      React + Vite + TypeScript"
+  echo "    next       Next.js 15 + TypeScript"
+  echo "    express    Express API + TypeScript + Zod"
+  echo "    fullstack  Next.js + Prisma + NextAuth"
+  echo "    expo       Expo + React Native + TypeScript"
+  echo ""
+  echo "  Example: newproject next my-awesome-app"
+  echo ""
+}
+
+if [ $# -lt 2 ]; then
+  show_help
+  exit 1
+fi
+
+TEMPLATE=$1
+PROJECT_NAME=$2
+
+case $TEMPLATE in
+  react)
+    SOURCE="$TEMPLATES_DIR/react-app"
+    STACK="React + Vite + TypeScript"
+    ;;
+  next)
+    SOURCE="$TEMPLATES_DIR/next-app"
+    STACK="Next.js 15 + TypeScript"
+    ;;
+  express)
+    SOURCE="$TEMPLATES_DIR/express-api"
+    STACK="Express 5 + TypeScript + Zod"
+    ;;
+  fullstack)
+    SOURCE="$TEMPLATES_DIR/fullstack-app"
+    STACK="Next.js + Prisma + NextAuth"
+    ;;
+  expo|mobile)
+    SOURCE="$TEMPLATES_DIR/expo-app"
+    STACK="Expo + React Native + TypeScript"
+    ;;
+  *)
+    echo "Error: Unknown template '$TEMPLATE'"
+    show_help
+    exit 1
+    ;;
+esac
+
+if [ -d "$PROJECT_NAME" ]; then
+  echo "Error: Directory '$PROJECT_NAME' already exists"
+  exit 1
+fi
+
+echo ""
+echo "  ╔════════════════════════════════════════╗"
+echo "  ║         🚀 TIMMY TEMPLATE 🚀           ║"
+echo "  ╚════════════════════════════════════════╝"
+echo ""
+echo "  Creating: $PROJECT_NAME"
+echo "  Stack:    $STACK"
+echo ""
+
+cp -r "$SOURCE" "$PROJECT_NAME"
+
+# Update package.json name
+if [ -f "$PROJECT_NAME/package.json" ]; then
+  sed -i '' "s/\"name\": \".*\"/\"name\": \"$PROJECT_NAME\"/" "$PROJECT_NAME/package.json"
+fi
+
+# Update app.json for Expo projects
+if [ -f "$PROJECT_NAME/app.json" ]; then
+  sed -i '' "s/\"name\": \".*\"/\"name\": \"$PROJECT_NAME\"/" "$PROJECT_NAME/app.json"
+  sed -i '' "s/\"slug\": \".*\"/\"slug\": \"$PROJECT_NAME\"/" "$PROJECT_NAME/app.json"
+fi
+
+# Copy .env.example to .env if it exists
+if [ -f "$PROJECT_NAME/.env.example" ]; then
+  cp "$PROJECT_NAME/.env.example" "$PROJECT_NAME/.env"
+fi
+
+# Initialize git
+cd "$PROJECT_NAME"
+git init -q
+git add .
+git commit -q -m "Initial commit from Timmy Template ($TEMPLATE)"
+
+echo "  ✓ Project created at ./$PROJECT_NAME"
+echo ""
+echo "  Next steps:"
+echo "    cd $PROJECT_NAME"
+echo "    npm install"
+if [ "$TEMPLATE" = "expo" ] || [ "$TEMPLATE" = "mobile" ]; then
+  echo "    npx expo start"
+else
+  echo "    npm run dev"
+fi
+echo ""
