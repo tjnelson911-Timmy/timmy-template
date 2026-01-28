@@ -1,0 +1,51 @@
+# Dependencies
+node_modules/
+
+# Native builds
+android/
+ios/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Bundle artifacts
+*.jsbundle
+*.bundle
+
+# CocoaPods
+Pods/
+
+# Gradle
+.gradle/
+build/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# Debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# Testing
+coverage/
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Metro
+.metro-health-check*
+
+# Temporary files
+*.log
+*.tmp

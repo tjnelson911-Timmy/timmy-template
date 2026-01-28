@@ -11,6 +11,7 @@ Production-ready project scaffolding for modern web and mobile development.
 | **express** | Express 5 + TypeScript + Zod | `newproject express myapp` |
 | **fullstack** | Next.js + Prisma + NextAuth | `newproject fullstack myapp` |
 | **expo** | Expo + React Native + TypeScript | `newproject expo myapp` |
+| **rn** | React Native CLI + TypeScript | `newproject rn myapp` |
 
 ## Installation
 
@@ -45,8 +46,11 @@ newproject express my-api
 # Create a full-stack app with database and auth
 newproject fullstack my-saas
 
-# Create a mobile app with Expo
+# Create a mobile app with Expo (easier setup)
 newproject expo my-mobile-app
+
+# Create a mobile app with React Native CLI (more control)
+newproject rn my-native-app
 ```
 
 Then:
@@ -54,7 +58,7 @@ Then:
 ```bash
 cd <project-name>
 npm install
-npm run dev
+npm run dev  # or npx expo start / npx react-native run-ios
 ```
 
 ## What's Included
@@ -99,6 +103,16 @@ npm run dev
 - Custom Button component
 - AsyncStorage hook
 - API utility
+
+### React Native CLI Template
+- React Native 0.76
+- React Navigation (tabs + stack)
+- TypeScript
+- Tab navigation (Home, Profile, Settings)
+- Custom Button component
+- AsyncStorage hook
+- API service
+- Requires Xcode (iOS) or Android Studio (Android)
 
 ## Customization
 

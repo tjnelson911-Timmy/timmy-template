@@ -14,11 +14,12 @@ show_help() {
   echo "  Usage: newproject <template> <project-name>"
   echo ""
   echo "  Templates:"
-  echo "    react      React + Vite + TypeScript"
-  echo "    next       Next.js 15 + TypeScript"
-  echo "    express    Express API + TypeScript + Zod"
-  echo "    fullstack  Next.js + Prisma + NextAuth"
-  echo "    expo       Expo + React Native + TypeScript"
+  echo "    react        React + Vite + TypeScript"
+  echo "    next         Next.js 15 + TypeScript"
+  echo "    express      Express API + TypeScript + Zod"
+  echo "    fullstack    Next.js + Prisma + NextAuth"
+  echo "    expo         Expo + React Native + TypeScript"
+  echo "    rn           React Native CLI + TypeScript"
   echo ""
   echo "  Example: newproject next my-awesome-app"
   echo ""
@@ -49,9 +50,13 @@ case $TEMPLATE in
     SOURCE="$TEMPLATES_DIR/fullstack-app"
     STACK="Next.js + Prisma + NextAuth"
     ;;
-  expo|mobile)
+  expo)
     SOURCE="$TEMPLATES_DIR/expo-app"
     STACK="Expo + React Native + TypeScript"
+    ;;
+  rn|react-native)
+    SOURCE="$TEMPLATES_DIR/react-native-app"
+    STACK="React Native CLI + TypeScript"
     ;;
   *)
     echo "Error: Unknown template '$TEMPLATE'"
@@ -81,10 +86,11 @@ if [ -f "$PROJECT_NAME/package.json" ]; then
   sed -i '' "s/\"name\": \".*\"/\"name\": \"$PROJECT_NAME\"/" "$PROJECT_NAME/package.json"
 fi
 
-# Update app.json for Expo projects
+# Update app.json for Expo/RN projects
 if [ -f "$PROJECT_NAME/app.json" ]; then
   sed -i '' "s/\"name\": \".*\"/\"name\": \"$PROJECT_NAME\"/" "$PROJECT_NAME/app.json"
   sed -i '' "s/\"slug\": \".*\"/\"slug\": \"$PROJECT_NAME\"/" "$PROJECT_NAME/app.json"
+  sed -i '' "s/\"displayName\": \".*\"/\"displayName\": \"$PROJECT_NAME\"/" "$PROJECT_NAME/app.json"
 fi
 
 # Copy .env.example to .env if it exists
@@ -103,8 +109,10 @@ echo ""
 echo "  Next steps:"
 echo "    cd $PROJECT_NAME"
 echo "    npm install"
-if [ "$TEMPLATE" = "expo" ] || [ "$TEMPLATE" = "mobile" ]; then
+if [ "$TEMPLATE" = "expo" ]; then
   echo "    npx expo start"
+elif [ "$TEMPLATE" = "rn" ] || [ "$TEMPLATE" = "react-native" ]; then
+  echo "    npx react-native run-ios  # or run-android"
 else
   echo "    npm run dev"
 fi
